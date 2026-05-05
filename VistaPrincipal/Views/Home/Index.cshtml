@@ -53,14 +53,39 @@
             </div>
         </section>
 
-        <section>
-            <div>
-                <h3>Inventario</h3>
-                <p>Controlar cantidades, entradas y salidas de productos.</p>
-                <a asp-controller="Inventario" asp-action="Index">Entrar a Inventarios</a>
-            </div>
-        </section>
+        <section class="seccion-repuestos">
+            <h2>Repuestos destacados</h2>
 
+            <div class="contenedor-repuestos">
+
+                <a class="caja-repuesto" asp-controller="Inventario" asp-action="Detalles" asp-route-id="1">
+                    <h3>Aceite de motor</h3>
+                    <p>Lubricante para mantenimiento preventivo.</p>
+                    <span>Ver detalles</span>
+                </a>
+
+                <a class="caja-repuesto" asp-controller="Inventario" asp-action="Detalles" asp-route-id="2">
+                    <h3>Filtro de aire</h3>
+                    <p>Mantiene limpio el ingreso de aire al motor.</p>
+                    <span>Ver detalles</span>
+                </a>
+
+                <a class="caja-repuesto" asp-controller="Inventario" asp-action="Detalles" asp-route-id="3">
+                    <h3>Pastillas de freno</h3>
+                    <p>Repuesto esencial para la seguridad.</p>
+                    <span>Ver detalles</span>
+                </a>
+
+                <a class="caja-repuesto" asp-controller="Inventario" asp-action="Detalles" asp-route-id="4">
+                    <h3>Batería</h3>
+                    <p>Batería automotriz para autos particulares.</p>
+                    <span>Ver detalles</span>
+                </a>
+
+                
+            </div>
+            <a class="boton-catalogo" asp-controller="Inventario" asp-action="Index">Catalogo</a>
+        </section>
         <section>
             <div>
                 <h3>Servicios</h3>

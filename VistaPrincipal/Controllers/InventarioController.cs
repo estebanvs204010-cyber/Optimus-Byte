@@ -8,5 +8,12 @@ namespace VistaPrincipal.Controllers
         {
             return View();
         }
+        public IActionResult Detalles(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
+
     }
 }
