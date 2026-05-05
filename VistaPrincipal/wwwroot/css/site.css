@@ -1,0 +1,111 @@
+body {
+    margin-bottom: 60px;
+}
+/*NAVAR*/
+.barra-superior {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 86px;
+    background-color: #2f343a;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 0 24px;
+    z-index: 1200;
+}
+
+.boton-menu {
+    position: static;
+    background-color: transparent;
+    color: white;
+    border: none;
+    width: 46px;
+    height: 46px;
+    font-size: 30px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .boton-menu:hover {
+        background-color: #343a40;
+    }
+
+.logo-proyecto {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-img {
+    height: 62px;
+    width: auto;
+    display: block;
+}
+
+.barra-lateral {
+    position: fixed;
+    top: 86px;
+    left: -260px;
+    width: 260px;
+    height: calc(100vh - 86px);
+    background-color: #2f343a;
+    padding: 25px 20px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+    .barra-lateral.activa {
+        left: 0;
+    }
+
+    .barra-lateral h2 {
+        color: white;
+        font-size: 24px;
+        margin-bottom: 35px;
+    }
+
+    .barra-lateral a {
+        display: block;
+        color: #dcdcdc;
+        text-decoration: none;
+        padding: 12px 10px;
+        border-radius: 5px;
+        font-size: 18px;
+    }
+
+    .barra-lateral a:hover {
+            background-color: #343a40;
+            color: white;
+    }
+
+.boton-ingresar {
+    margin-left: auto;
+    background-color: #0d6efd;
+    color: white;
+    text-decoration: none;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+    .boton-ingresar:hover {
+        background-color: #0b5ed7;
+        color: white;
+    }
+
+/*MAIN*/
+
+.contenido-principal {
+    padding-top: 115px;
+    transition: margin-left 0.3s ease;
+}
+
+    .contenido-principal.movido {
+        margin-left: 260px;
+    }

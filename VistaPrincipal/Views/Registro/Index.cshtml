@@ -1,0 +1,48 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Reguistro";
+}
+
+<h1>Registro de Clientes</h1>
+
+<form>
+    <div>
+    <label>Nombre Completo:</label><br>
+    <input type="text" name="nombre" placeholder="Ingresa el nombre completo" required>
+    </div>
+
+    <div>
+    <label>Correo Electrónico:</label><br>
+        <input type="email" name="correo" placeholder="ejemplo@correo.com" required>
+    </div>
+
+    <div>
+    <label>Teléfono:</label><br>
+    <input type="tel" name="telefono" placeholder="Ingresa el numero de telefono" required>
+    </div>
+
+    <div>
+        <label>Dirección:</label><br>
+        <input type="text" name="direccion" placeholder="Ingresa la dirección" required>
+    </div>
+
+    <div>
+        <label>Tipo de documento</label><br>
+        <select name="TipoDocumento" required>
+            <option value="">Seleccione...</option>
+            <option value="CC">Cédula de ciudadanía</option>
+            <option value="TI">Tarjeta de identidad</option>
+            <option value="CE">Cédula de extranjería</option>
+            <option value="PAS">Pasaporte</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Número de documento:</label><br>
+        <input type="text" name="NumeroDocumento" placeholder="Ingresa el numero de documento" required>
+    </div>
+
+    <button type="submit">Registrar</button>
+    <button type="reset">Limpiar</button>
+    <a asp-controller="Home" asp-action="Index">Volver al inicio</a>
+</form>

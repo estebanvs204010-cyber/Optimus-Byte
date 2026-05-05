@@ -1,0 +1,94 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Inicio";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - VistaPrincipal</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+
+<body>
+
+    <header class="barra-superior">
+        <button class="boton-menu" onclick="mostrarMenu()">☰</button>
+
+        <a class="logo-proyecto" asp-controller="Home" asp-action="Index">
+            <img src="~/img/logo-optimus-byte.png" alt="Optimus-Byte" class="logo-img" />
+        </a>
+        <a class="boton-ingresar" asp-controller="Login" asp-action="Index">
+            Ingresar
+        </a>
+    </header>
+
+    <aside class="barra-lateral" id="barraLateral">
+        <h2>Optimus-Byte</h2>
+
+        <a asp-controller="Home" asp-action="Index">Inicio</a>
+        <a asp-controller="Registro" asp-action="Index">Clientes</a>
+        <a asp-controller="Inventario" asp-action="Index">Inventario</a>
+        <a asp-controller="Servicios" asp-action="Index">Servicios</a>
+        <a asp-controller="Citas" asp-action="Index">Citas</a>
+        <a asp-controller="Home" asp-action="Sobre">Acerca de</a>
+    </aside>
+
+    <main class="container contenido-principal" id="contenidoPrincipal">
+
+        <section>
+            <div>
+                <h1>Bienvenido a Optimus-Byte</h1>
+                <p>Tu taller mecánico de confianza para el cuidado de tu vehículo.</p>
+            </div>
+        </section>
+
+        <section>
+            <div>
+                <h3>Registro de Clientes</h3>
+                <a asp-controller="Registro" asp-action="Index">Entrar a Clientes</a>
+            </div>
+        </section>
+
+        <section>
+            <div>
+                <h3>Inventario</h3>
+                <p>Controlar cantidades, entradas y salidas de productos.</p>
+                <a asp-controller="Inventario" asp-action="Index">Entrar a Inventarios</a>
+            </div>
+        </section>
+
+        <section>
+            <div>
+                <h3>Servicios</h3>
+                <p>Gestionar los servicios que ofrece el taller mecánico.</p>
+                <a asp-controller="Servicios" asp-action="Index">Entrar a Servicios</a>
+            </div>
+        </section>
+
+        <section>
+            <div>
+                <h3>Citas</h3>
+                <p>Agendar citas de clientes para revisión o reparación.</p>
+                <a asp-controller="Citas" asp-action="Index">Entrar a Citas</a>
+            </div>
+        </section>
+
+        <section>
+            <div>
+                <h3>Sobre el Taller</h3>
+                <p>Información sobre el taller mecánico, su historia y misión.</p>
+                <a asp-controller="Home" asp-action="Sobre">Entrar a Sobre el Taller</a>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+</body>
+</html>
