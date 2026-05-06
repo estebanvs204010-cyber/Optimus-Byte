@@ -23,7 +23,7 @@ public class CarritoController : Controller
         return RedirectToAction("Index");
     }
 
-    //  ELIMINAR
+    // ELIMINAR
     public IActionResult Eliminar(int id)
     {
         var item = carrito.FirstOrDefault(x => x.Id == id);
@@ -34,14 +34,14 @@ public class CarritoController : Controller
         return RedirectToAction("Index");
     }
 
-    //  EDITAR (GET)
+    // EDITAR (GET)
     public IActionResult Editar(int id)
     {
         var item = carrito.FirstOrDefault(x => x.Id == id);
         return View(item);
     }
 
-    //  EDITAR (POST)
+    // EDITAR (POST)
     [HttpPost]
     public IActionResult Editar(CarritoItem item)
     {

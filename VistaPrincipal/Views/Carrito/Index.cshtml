@@ -11,8 +11,9 @@
             <th>Precio</th>
             <th>Cantidad</th>
             <th>Subtotal</th>
+            <th>Acciones</th>
         </tr>
-    </thead>
+    </thead>    
 
     <tbody>
         @if (Model != null && Model.Count > 0)
@@ -30,6 +31,10 @@
                     <td>@item.Cantidad</td>
                     <td>@subtotal</td>
                 </tr>
+             <td>
+                    <a asp-action="Editar" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Eliminar" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>   
             }
 
         }
@@ -55,4 +60,9 @@
         }
     }
     @totalFinal
+
+    <a asp-controller="Facturas" asp-action="Generar" class="btn btn-success">
+    Pagar
+    </a>
+
 </h3>
