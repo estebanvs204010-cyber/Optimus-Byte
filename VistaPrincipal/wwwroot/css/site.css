@@ -106,6 +106,68 @@ body {
     transition: margin-left 0.3s ease;
 }
 
-    .contenido-principal.movido {
+ .contenido-principal.movido {
         margin-left: 260px;
+ }
+
+
+/*REPUESTOS*/
+.seccion-repuestos {
+    text-align: center;
+    margin-top: 40px;
+}
+
+    .seccion-repuestos h2 {
+        margin-bottom: 20px;
     }
+
+.contenedor-repuestos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.caja-repuesto {
+    display: block;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    padding: 18px;
+    background-color: #ffffff;
+    text-decoration: none;
+    color: #212529;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .caja-repuesto:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+        color: #212529;
+    }
+
+    .caja-repuesto span {
+        display: inline-block;
+        margin-top: 10px;
+        font-weight: bold;
+        color: #0d6efd;
+    }
+
+.boton-catalogo {
+    display: block;
+    width: fit-content;
+    margin: 20px auto;
+    background-color: #0d6efd;
+    color: white;
+    text-decoration: none;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+    .boton-catalogo:hover {
+        background-color: #0b5ed7;
+        color: white;
+    }
+
+
