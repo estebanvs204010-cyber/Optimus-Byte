@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Reparaciones Mecánicas";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Optimus-Byte</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-body p-4 p-md-5">
+                        <span class="badge text-bg-warning mb-3">Mecánica</span>
+                        <h1 class="fw-bold mb-3">Reparaciones Mecánicas</h1>
+                        <p class="text-muted mb-0">Solucionamos fallas en componentes esenciales del vehículo con atención profesional.</p>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body">
+                        <h5 class="fw-semibold mb-3">Áreas de atención</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Motor.</li>
+                            <li class="list-group-item">Transmisión.</li>
+                            <li class="list-group-item">Suspensión.</li>
+                            <li class="list-group-item">Dirección.</li>
+                        </ul>
+                        <div class="mt-4">
+                            <a class="btn btn-warning" asp-controller="Servicios" asp-action="Index">Volver a servicios</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Diagnóstico Computarizado";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Optimus-Byte</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="bg-light">
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-body p-4 p-md-5">
+                        <span class="badge text-bg-primary mb-3">Servicio técnico</span>
+                        <h1 class="fw-bold mb-3">Diagnóstico Computarizado</h1>
+                        <p class="text-muted mb-0">
+                            Realizamos una revisión avanzada del sistema electrónico y mecánico del vehículo
+                            para identificar fallas con mayor precisión.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm rounded-4">
+                            <div class="card-body">
+                                <h5 class="fw-semibold">Incluye</h5>
+                                <ul class="list-group list-group-flush mt-3">
+                                    <li class="list-group-item px-0">Lectura de códigos de error.</li>
+                                    <li class="list-group-item px-0">Revisión de sensores y módulos.</li>
+                                    <li class="list-group-item px-0">Evaluación del sistema eléctrico.</li>
+                                    <li class="list-group-item px-0">Informe general de fallas detectadas.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm rounded-4">
+                            <div class="card-body">
+                                <h5 class="fw-semibold">Beneficios</h5>
+                                <p class="text-muted">
+                                    Permite detectar problemas antes de que se conviertan en daños mayores,
+                                    ahorrando tiempo y dinero en reparaciones.
+                                </p>
+                                <a class="btn btn-primary" asp-controller="Servicios" asp-action="Index">Volver a servicios</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
