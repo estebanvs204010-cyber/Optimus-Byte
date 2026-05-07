@@ -9,6 +9,6 @@ namespace VistaPrincipal.Models
         public int FacturaId { get; set; } 
         public DateTime FechaPago { get; set; }
         public decimal Monto { get; set; }
-        public string MetodoPago { get; set; }
+        public string? MetodoPago { get; set; }
     }
 }
