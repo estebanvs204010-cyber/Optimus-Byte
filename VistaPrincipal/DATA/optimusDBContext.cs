@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VistaPrincipal.Models;
 using System.Collections.Generic;
 
 namespace VistaPrincipal.Data
