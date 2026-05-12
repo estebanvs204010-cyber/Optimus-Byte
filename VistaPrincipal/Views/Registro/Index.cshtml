@@ -1,48 +1,179 @@
-﻿@{
+﻿@model VistaPrincipal.Models.ViewModels.RegistroViewModel
+@{
     Layout = null;
-    ViewData["Title"] = "Reguistro";
 }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>OPTIMUS-BYTE — Registro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/css/registro.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
 
-<h1>Registro de Clientes</h1>
+            @* ── Lado izquierdo: formulario ── *@
+            <div class="col-md-6 left-side">
+                <div class="form-box">
 
-<form>
-    <div>
-    <label>Nombre Completo:</label><br>
-    <input type="text" name="nombre" placeholder="Ingresa el nombre completo" required>
+                    <div class="mb-3">
+                        <div class="brand">⚙ OPTIMUS-BYTE</div>
+                        <div class="subtitle">Crea tu cuenta para acceder al portal del cliente</div>
+                    </div>
+
+                    @* Errores de validación *@
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger py-2 small">
+                            @Html.ValidationSummary(false, "", new { @class = "mb-0" })
+                        </div>
+                    }
+
+                    <form asp-controller="Registro" asp-action="Index" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <h5 class="mb-3 text-light fw-semibold">Crear cuenta</h5>
+
+                        @* Nombre completo *@
+                        <div class="mb-3">
+                            <label asp-for="NombreCompleto">Nombre completo</label>
+                            <div class="input-group mt-1">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input asp-for="NombreCompleto" class="form-control"
+                                       placeholder="Tu nombre completo" />
+                            </div>
+                            <span asp-validation-for="NombreCompleto" class="text-danger" style="font-size:.8rem"></span>
+                        </div>
+
+                        @* Correo *@
+                        <div class="mb-3">
+                            <label asp-for="Correo">Correo electrónico</label>
+                            <div class="input-group mt-1">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input asp-for="Correo" class="form-control"
+                                       placeholder="ejemplo@correo.com" />
+                            </div>
+                            <span asp-validation-for="Correo" class="text-danger" style="font-size:.8rem"></span>
+                        </div>
+
+                        @* Teléfono *@
+                        <div class="mb-3">
+                            <label asp-for="Telefono">Teléfono</label>
+                            <div class="input-group mt-1">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input asp-for="Telefono" class="form-control"
+                                       placeholder="300 123 4567" />
+                            </div>
+                            <span asp-validation-for="Telefono" class="text-danger" style="font-size:.8rem"></span>
+                        </div>
+
+                        @* Contraseña *@
+                        <div class="mb-3">
+                            <label asp-for="Contrasena">Contraseña</label>
+                            <div class="input-group mt-1">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input asp-for="Contrasena" type="password" id="inputContrasena"
+                                       class="form-control" placeholder="Mínimo 6 caracteres"
+                                       oninput="evaluarContrasena(this.value)" />
+                                <button class="input-group-text" type="button"
+                                        onclick="togglePass('inputContrasena', this)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            @* Barra de fortaleza *@
+                            <div class="mt-1 bg-dark rounded">
+                                <div id="strengthBar" class="strength-bar" style="width:0%; background:#ef4444"></div>
+                            </div>
+                            <span id="strengthText" class="text-secondary" style="font-size:.75rem"></span>
+                            <span asp-validation-for="Contrasena" class="text-danger d-block" style="font-size:.8rem"></span>
+                        </div>
+
+                        @* Confirmar contraseña *@
+                        <div class="mb-4">
+                            <label asp-for="ConfirmarContrasena">Confirmar contraseña</label>
+                            <div class="input-group mt-1">
+                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                <input asp-for="ConfirmarContrasena" type="password" id="inputConfirmar"
+                                       class="form-control" placeholder="Repite la contraseña" />
+                                <button class="input-group-text" type="button"
+                                        onclick="togglePass('inputConfirmar', this)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="ConfirmarContrasena" class="text-danger" style="font-size:.8rem"></span>
+                        </div>
+
+                        <div class="d-flex gap-2 mb-3">
+                            <button type="submit" class="btn btn-registro flex-fill">
+                                <i class="bi bi-person-check me-2"></i> Crear cuenta
+                            </button>
+                            <button type="reset" class="btn btn-limpiar px-3" title="Limpiar formulario">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+
+                        <div class="text-center">
+                            <span class="text-secondary" style="font-size:.85rem">¿Ya tienes cuenta?</span>
+                            <a asp-controller="Login" asp-action="Index" class="link-login ms-1">
+                                Inicia sesión
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            @* ── Lado derecho: imagen ── *@
+            <div class="col-md-6 px-0 d-none d-md-block image-side">
+                <img src="https://i.pinimg.com/736x/ee/f2/13/eef2131abb38643166c6a946d21c3973.jpg"
+                     alt="OPTIMUS-BYTE">
+            </div>
+
+        </div>
     </div>
 
-    <div>
-    <label>Correo Electrónico:</label><br>
-        <input type="email" name="correo" placeholder="ejemplo@correo.com" required>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mostrar/ocultar contraseña
+        function togglePass(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon  = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'bi bi-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'bi bi-eye';
+            }
+        }
 
-    <div>
-    <label>Teléfono:</label><br>
-    <input type="tel" name="telefono" placeholder="Ingresa el numero de telefono" required>
-    </div>
+        // Indicador de fortaleza de contraseña
+        function evaluarContrasena(val) {
+            const bar  = document.getElementById('strengthBar');
+            const text = document.getElementById('strengthText');
+            let score = 0;
+            if (val.length >= 6)  score++;
+            if (val.length >= 10) score++;
+            if (/[A-Z]/.test(val)) score++;
+            if (/[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
 
-    <div>
-        <label>Dirección:</label><br>
-        <input type="text" name="direccion" placeholder="Ingresa la dirección" required>
-    </div>
-
-    <div>
-        <label>Tipo de documento</label><br>
-        <select name="TipoDocumento" required>
-            <option value="">Seleccione...</option>
-            <option value="CC">Cédula de ciudadanía</option>
-            <option value="TI">Tarjeta de identidad</option>
-            <option value="CE">Cédula de extranjería</option>
-            <option value="PAS">Pasaporte</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Número de documento:</label><br>
-        <input type="text" name="NumeroDocumento" placeholder="Ingresa el numero de documento" required>
-    </div>
-
-    <button type="submit">Registrar</button>
-    <button type="reset">Limpiar</button>
-    <a asp-controller="Home" asp-action="Index">Volver al inicio</a>
-</form>
+            const levels = [
+                { w: '20%', c: '#ef4444', t: 'Muy débil'   },
+                { w: '40%', c: '#f97316', t: 'Débil'        },
+                { w: '60%', c: '#eab308', t: 'Regular'      },
+                { w: '80%', c: '#22c55e', t: 'Fuerte'       },
+                { w: '100%',c: '#38bdf8', t: 'Muy fuerte'   },
+            ];
+            const lv = levels[Math.min(score - 1, 4)] || { w: '0%', c: '#ef4444', t: '' };
+            bar.style.width      = val.length ? lv.w : '0%';
+            bar.style.background = lv.c;
+            text.textContent     = val.length ? lv.t : '';
+            text.style.color     = lv.c;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,565 @@
+﻿/* ============================================================
+   OPTIMUS-BYTE — LOGIN PAGE
+   Tema: Lujo Automotriz | Oscuro · Dorado · Formal
+   ============================================================ */
+
+/*@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');*/
+
+/* ── Variables ── */
+:root {
+    --negro: #070709;
+    --carbon: #0d0f13;
+    --grafito: #141720;
+    --grafito-med: #1c2028;
+    --dorado: #c9a84c;
+    --dorado-claro: #e2c47a;
+    --dorado-suave: rgba(201, 168, 76, 0.1);
+    --marfil: #f0ebe0;
+    --texto-claro: #c8cdd6;
+    --texto-suave: #6b7480;
+    --borde: rgba(201, 168, 76, 0.15);
+    --borde-input: rgba(255,255,255,0.07);
+    --fuente-titulo: 'Cormorant Garamond', Georgia, serif;
+    --fuente-cuerpo: 'Jost', sans-serif;
+    --transicion: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Reset base ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--negro);
+    font-family: var(--fuente-cuerpo);
+    font-weight: 300;
+    color: var(--texto-claro);
+    overflow: hidden;
+}
+
+
+/* ════════════════════════════════════════
+   LAYOUT DE DOS COLUMNAS
+   ════════════════════════════════════════ */
+
+.row.g-0 {
+    min-height: 100vh;
+}
+
+
+/* ════════════════════════════════════════
+   LADO IZQUIERDO — FORMULARIO
+   ════════════════════════════════════════ */
+
+.left-side {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 40px;
+    background-color: var(--carbon);
+    position: relative;
+    z-index: 2;
+}
+
+    /* Patrón sutil de puntos */
+    .left-side::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle, rgba(201,168,76,0.04) 1px, transparent 1px);
+        background-size: 28px 28px;
+        pointer-events: none;
+    }
+
+    /* Línea dorada lateral derecha */
+    .left-side::after {
+        content: '';
+        position: absolute;
+        top: 10%;
+        right: 0;
+        width: 1px;
+        height: 80%;
+        background: linear-gradient(to bottom, transparent, var(--dorado), transparent);
+        opacity: 0.3;
+    }
+
+.form-box {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    z-index: 1;
+    animation: slideIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ════════════════════════════════════════
+   ENCABEZADO DEL FORMULARIO
+   ════════════════════════════════════════ */
+
+/* Logotipo / marca */
+.brand {
+    display: block;
+    font-family: var(--fuente-titulo);
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--dorado);
+    letter-spacing: 0.03em;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+/* Icono o emblema decorativo */
+.brand-emblem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+    .brand-emblem .linea {
+        flex: 1;
+        height: 1px;
+        background: var(--borde);
+    }
+
+    .brand-emblem .rombo {
+        width: 6px;
+        height: 6px;
+        background: var(--dorado);
+        transform: rotate(45deg);
+        opacity: 0.7;
+    }
+
+.subtitle {
+    color: var(--texto-suave);
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    display: block;
+}
+
+
+/* ════════════════════════════════════════
+   CAMPOS DEL FORMULARIO
+   ════════════════════════════════════════ */
+
+label {
+    color: var(--texto-suave);
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 7px;
+    display: block;
+}
+
+.form-control {
+    background: var(--grafito-med) !important;
+    border: 1px solid var(--borde-input) !important;
+    color: var(--marfil) !important;
+    height: 50px;
+    border-radius: 3px !important;
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.9rem;
+    font-weight: 300;
+    transition: var(--transicion);
+    padding: 0 16px;
+}
+
+    .form-control::placeholder {
+        color: rgba(107, 116, 128, 0.6) !important;
+        font-size: 0.85rem;
+    }
+
+    .form-control:focus {
+        border-color: var(--dorado) !important;
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1), inset 0 0 0 1px rgba(201,168,76,0.1) !important;
+        background: var(--grafito) !important;
+        outline: none;
+        color: var(--marfil) !important;
+    }
+
+/* Grupo con ícono */
+.input-group-text {
+    background: var(--grafito-med) !important;
+    border: 1px solid var(--borde-input) !important;
+    border-right: none !important;
+    color: var(--dorado) !important;
+    font-size: 0.9rem;
+    padding: 0 14px;
+    border-radius: 3px 0 0 3px !important;
+}
+
+.input-group .form-control {
+    border-left: none !important;
+    border-radius: 0 3px 3px 0 !important;
+}
+
+.input-group:focus-within .input-group-text {
+    border-color: var(--dorado) !important;
+    color: var(--dorado-claro) !important;
+}
+
+.input-group:focus-within .form-control {
+    border-color: var(--dorado) !important;
+}
+
+/* Campo de contraseña */
+.campo-password {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--texto-suave);
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.9rem;
+    transition: color var(--transicion);
+}
+
+    .toggle-password:hover {
+        color: var(--dorado);
+    }
+
+/* Validación */
+.form-control.is-invalid {
+    border-color: #e05a5a !important;
+    background-image: none !important;
+}
+
+.invalid-feedback {
+    color: #e07070 !important;
+    font-size: 0.77rem;
+    letter-spacing: 0.02em;
+}
+
+.text-danger {
+    color: #e07070 !important;
+    font-size: 0.8rem;
+}
+
+
+/* ════════════════════════════════════════
+   ENLACE "RECORDARME" / OLVIDO CONTRASEÑA
+   ════════════════════════════════════════ */
+
+.form-check-input {
+    background-color: var(--grafito-med) !important;
+    border-color: var(--borde-input) !important;
+}
+
+    .form-check-input:checked {
+        background-color: var(--dorado) !important;
+        border-color: var(--dorado) !important;
+    }
+
+.form-check-label {
+    color: var(--texto-suave) !important;
+    font-size: 0.82rem !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+.enlace-secundario {
+    color: var(--dorado);
+    font-size: 0.8rem;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    opacity: 0.8;
+    transition: opacity var(--transicion);
+}
+
+    .enlace-secundario:hover {
+        opacity: 1;
+        text-decoration: underline;
+    }
+
+
+/* ════════════════════════════════════════
+   BOTÓN PRIMARIO
+   ════════════════════════════════════════ */
+
+.btn-primary {
+    width: 100%;
+    background: transparent !important;
+    background-image: none !important;
+    border: 1px solid var(--dorado) !important;
+    color: var(--dorado) !important;
+    height: 50px;
+    font-family: var(--fuente-cuerpo) !important;
+    font-weight: 500 !important;
+    font-size: 0.82rem !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    border-radius: 3px !important;
+    cursor: pointer;
+    transition: var(--transicion) !important;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+    /* Efecto fill al hacer hover */
+    .btn-primary::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: var(--dorado);
+        transform: translateX(-100%);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 0;
+    }
+
+    .btn-primary:hover::before {
+        transform: translateX(0);
+    }
+
+    .btn-primary:hover {
+        color: var(--negro) !important;
+        box-shadow: 0 0 28px rgba(201,168,76,0.25) !important;
+    }
+
+    .btn-primary span,
+    .btn-primary:not(:has(span)) {
+        position: relative;
+        z-index: 1;
+    }
+
+
+/* ════════════════════════════════════════
+   DIVISOR
+   ════════════════════════════════════════ */
+
+.divisor-login {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 24px 0;
+    color: var(--texto-suave);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+    .divisor-login::before,
+    .divisor-login::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--borde-input);
+    }
+
+
+/* ════════════════════════════════════════
+   ENLACE DE REGISTRO
+   ════════════════════════════════════════ */
+
+.registro-texto {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.82rem;
+    color: var(--texto-suave);
+}
+
+    .registro-texto a {
+        color: var(--dorado);
+        text-decoration: none;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        transition: var(--transicion);
+    }
+
+        .registro-texto a:hover {
+            color: var(--dorado-claro);
+        }
+
+
+/* ════════════════════════════════════════
+   LADO DERECHO — IMAGEN
+   ════════════════════════════════════════ */
+
+.image-side {
+    position: relative;
+    overflow: hidden;
+}
+
+    .image-side img {
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+        display: block;
+        filter: brightness(0.55) saturate(0.8);
+        transition: transform 8s ease;
+    }
+
+    .image-side:hover img {
+        transform: scale(1.03);
+    }
+
+    /* Overlay en degradado */
+    .image-side::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient( to right, rgba(7, 7, 9, 0.92) 0%, rgba(7, 7, 9, 0.5) 40%, rgba(7, 7, 9, 0.15) 100% );
+        z-index: 1;
+    }
+
+    /* Texto superpuesto sobre la imagen */
+    .image-side .overlay-text {
+        position: absolute;
+        bottom: 56px;
+        right: 48px;
+        z-index: 2;
+        text-align: right;
+    }
+
+        .image-side .overlay-text h2 {
+            font-family: var(--fuente-titulo);
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: var(--marfil);
+            line-height: 1.15;
+            margin: 0 0 12px;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+        }
+
+            .image-side .overlay-text h2 em {
+                color: var(--dorado);
+                font-style: italic;
+            }
+
+        .image-side .overlay-text p {
+            color: rgba(200, 205, 214, 0.7);
+            font-size: 0.85rem;
+            letter-spacing: 0.06em;
+            margin: 0;
+        }
+
+        /* Línea decorativa sobre el texto */
+        .image-side .overlay-text::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1px;
+            background: var(--dorado);
+            margin-left: auto;
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+
+
+/* ════════════════════════════════════════
+   ALERTA DE ERROR
+   ════════════════════════════════════════ */
+
+.alerta-login {
+    background: rgba(224, 90, 90, 0.08);
+    border: 1px solid rgba(224, 90, 90, 0.25);
+    border-left: 3px solid #e05a5a;
+    color: #e07070;
+    padding: 12px 16px;
+    border-radius: 3px;
+    font-size: 0.83rem;
+    margin-bottom: 20px;
+    letter-spacing: 0.02em;
+}
+
+.alerta-exito {
+    background: rgba(74, 222, 128, 0.06);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    border-left: 3px solid #4ade80;
+    color: #6ee7a0;
+    padding: 12px 16px;
+    border-radius: 3px;
+    font-size: 0.83rem;
+    margin-bottom: 20px;
+}
+
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    body {
+        overflow: auto;
+    }
+
+    .left-side {
+        min-height: 100vh;
+        padding: 40px 24px;
+    }
+
+        .left-side::after {
+            display: none;
+        }
+
+    .image-side {
+        display: none;
+    }
+
+    .form-box {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand {
+        font-size: 2rem;
+    }
+
+    .left-side {
+        padding: 32px 20px;
+    }
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    opacity: .95;
+}
+
+/* LADO DERECHO */
+.image-side {
+    position: relative;
+}
+
+    .image-side img {
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+    }
+
+    /* overlay oscuro elegante */
+    .image-side::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient( to left, rgba(15, 23, 42, 0.1), rgba(15, 23, 42, 0.9) );
+    }

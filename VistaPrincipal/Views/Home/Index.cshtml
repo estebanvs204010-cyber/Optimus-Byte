@@ -1,6 +1,9 @@
 ﻿@{
     Layout = null;
     ViewData["Title"] = "Inicio";
+    var nombre = ViewBag.UsuarioNombre as string;
+    var rol = ViewBag.UsuarioRol as string;
+    bool logueado = !string.IsNullOrEmpty(nombre);
 }
 
 <!DOCTYPE html>
@@ -8,82 +11,1403 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - VistaPrincipal</title>
+    <title>Optimus-Byte — Taller Mecánico de Confianza</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+    <style>
+
+        /* ══════════════════════════════════════════════
+                   HERO — Fondo con imagen + overlay oscuro
+                ══════════════════════════════════════════════ */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            padding-top: var(--alto-barra);
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(201,168,76,0.06) 0%, transparent 70%), radial-gradient(ellipse 40% 80% at 90% 20%, rgba(201,168,76,0.04) 0%, transparent 60%), linear-gradient(160deg, #080a0e 0%, #111318 40%, #0d1018 100%);
+            z-index: 0;
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+        }
+
+        .hero-circle {
+            position: absolute;
+            right: -120px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            border: 1px solid rgba(201,168,76,0.08);
+            z-index: 0;
+        }
+
+            .hero-circle::before {
+                content: '';
+                position: absolute;
+                inset: 60px;
+                border-radius: 50%;
+                border: 1px solid rgba(201,168,76,0.06);
+            }
+
+            .hero-circle::after {
+                content: '';
+                position: absolute;
+                inset: 120px;
+                border-radius: 50%;
+                border: 1px dashed rgba(201,168,76,0.05);
+            }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 80px 0 100px;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--dorado);
+            margin-bottom: 24px;
+        }
+
+            .hero-eyebrow::before {
+                content: '';
+                display: block;
+                width: 28px;
+                height: 1px;
+                background: var(--dorado);
+            }
+
+        .hero-title {
+            font-family: var(--fuente-titulo);
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            font-weight: 300;
+            color: var(--marfil);
+            line-height: 1.05;
+            margin-bottom: 28px;
+            letter-spacing: -0.02em;
+        }
+
+            .hero-title strong {
+                font-weight: 600;
+                color: var(--dorado);
+                display: block;
+            }
+
+            .hero-title em {
+                font-style: italic;
+                color: rgba(245,240,232,0.6);
+            }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--texto-claro);
+            max-width: 480px;
+            line-height: 1.8;
+            margin-bottom: 44px;
+            opacity: 0.85;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .hero-cta-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--dorado);
+            color: var(--negro);
+            text-decoration: none;
+            padding: 14px 36px;
+            border-radius: var(--radio);
+            font-weight: 600;
+            font-size: 0.82rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            transition: var(--transicion);
+            font-family: var(--fuente-cuerpo);
+        }
+
+            .hero-cta-primary:hover {
+                background: var(--dorado-claro);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 28px rgba(201,168,76,0.4);
+                color: var(--negro);
+            }
+
+        .hero-cta-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            color: var(--dorado);
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: var(--radio);
+            border: 1px solid rgba(201,168,76,0.4);
+            font-size: 0.82rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            transition: var(--transicion);
+            font-family: var(--fuente-cuerpo);
+        }
+
+            .hero-cta-secondary:hover {
+                background: rgba(201,168,76,0.08);
+                border-color: var(--dorado);
+                color: var(--dorado);
+            }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 64px;
+            padding-top: 40px;
+            border-top: 1px solid var(--borde);
+            flex-wrap: wrap;
+        }
+
+        .hero-stat-num {
+            font-family: var(--fuente-titulo);
+            font-size: 2.4rem;
+            font-weight: 600;
+            color: var(--dorado);
+            line-height: 1;
+            display: block;
+        }
+
+        .hero-stat-lbl {
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--texto-suave);
+            margin-top: 6px;
+            display: block;
+        }
+
+        .hero-visual {
+            position: absolute;
+            right: 4%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            opacity: 0.18;
+            width: 520px;
+        }
+
+        /* ══════════════════════════════════════════════
+                   SECCIÓN COMPARTIDA
+                ══════════════════════════════════════════════ */
+        .seccion {
+            padding: 100px 0;
+        }
+
+        .seccion-alt {
+            background: rgba(255,255,255,0.015);
+            border-top: 1px solid var(--borde);
+            border-bottom: 1px solid var(--borde);
+        }
+
+        .sec-eyebrow {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--dorado);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .sec-eyebrow::before {
+                content: '';
+                width: 22px;
+                height: 1px;
+                background: var(--dorado);
+            }
+
+        .sec-titulo {
+            font-family: var(--fuente-titulo);
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 300;
+            color: var(--marfil);
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+            .sec-titulo em {
+                color: var(--dorado);
+                font-style: italic;
+            }
+
+        .sec-desc {
+            color: var(--texto-suave);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            max-width: 500px;
+        }
+
+        /* ══════════════════════════════════════════════
+                   SERVICIOS
+                ══════════════════════════════════════════════ */
+        .servicios-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 56px;
+        }
+
+        .servicio-card {
+            background: var(--grafito);
+            border: 1px solid var(--borde);
+            border-radius: var(--radio-m);
+            padding: 36px 32px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transicion);
+        }
+
+            .servicio-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 3px;
+                height: 0;
+                background: var(--dorado);
+                transition: height 0.4s ease;
+            }
+
+            .servicio-card:hover {
+                border-color: rgba(201,168,76,0.3);
+                background: var(--grafito-med);
+                transform: translateY(-4px);
+                box-shadow: var(--sombra-m);
+            }
+
+                .servicio-card:hover::before {
+                    height: 100%;
+                }
+
+        .servicio-icon {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .servicio-nombre {
+            font-family: var(--fuente-titulo);
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: var(--marfil);
+            margin-bottom: 10px;
+        }
+
+        .servicio-desc {
+            font-size: 0.85rem;
+            color: var(--texto-suave);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .servicio-precio {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--dorado);
+            font-weight: 500;
+        }
+
+        /* ══════════════════════════════════════════════
+                   REPUESTOS DESTACADOS
+                ══════════════════════════════════════════════ */
+        .repuestos-intro {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+
+        .precio-repuesto {
+            display: inline-block;
+            margin-top: 10px;
+            font-family: var(--fuente-titulo);
+            font-size: 1.15rem;
+            color: var(--dorado-claro);
+        }
+
+        /* ══════════════════════════════════════════════
+                   CITAS
+                ══════════════════════════════════════════════ */
+        .citas-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .citas-form-card {
+            background: var(--grafito);
+            border: 1px solid var(--borde);
+            border-radius: var(--radio-m);
+            padding: 44px;
+        }
+
+        .citas-form-titulo {
+            font-family: var(--fuente-titulo);
+            font-size: 1.6rem;
+            color: var(--marfil);
+            margin-bottom: 6px;
+        }
+
+        .citas-form-sub {
+            font-size: 0.82rem;
+            color: var(--texto-suave);
+            margin-bottom: 32px;
+        }
+
+        .campo-grupo {
+            margin-bottom: 20px;
+        }
+
+        .campo-label {
+            display: block;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--texto-suave);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .campo-input,
+        .campo-select,
+        .campo-textarea {
+            width: 100%;
+            background: var(--grafito-med);
+            border: 1px solid rgba(255,255,255,0.07);
+            color: var(--marfil);
+            padding: 12px 16px;
+            border-radius: var(--radio);
+            font-family: var(--fuente-cuerpo);
+            font-size: 0.88rem;
+            transition: var(--transicion);
+            outline: none;
+        }
+
+            .campo-input::placeholder,
+            .campo-textarea::placeholder {
+                color: var(--texto-suave);
+                opacity: 0.6;
+            }
+
+            .campo-input:focus,
+            .campo-select:focus,
+            .campo-textarea:focus {
+                border-color: var(--dorado);
+                box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+            }
+
+            .campo-select option {
+                background: var(--grafito-med);
+            }
+
+        .campo-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .btn-agendar {
+            width: 100%;
+            background: var(--dorado);
+            color: var(--negro);
+            border: none;
+            padding: 14px;
+            border-radius: var(--radio);
+            font-family: var(--fuente-cuerpo);
+            font-weight: 600;
+            font-size: 0.82rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transicion);
+            margin-top: 8px;
+        }
+
+            .btn-agendar:hover {
+                background: var(--dorado-claro);
+                box-shadow: 0 4px 20px rgba(201,168,76,0.35);
+            }
+
+        .beneficio-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--borde);
+        }
+
+            .beneficio-item:last-child {
+                border-bottom: none;
+            }
+
+        .beneficio-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--dorado-suave);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: var(--radio);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .beneficio-titulo {
+            font-family: var(--fuente-titulo);
+            font-size: 1.1rem;
+            color: var(--marfil);
+            margin-bottom: 4px;
+        }
+
+        .beneficio-texto {
+            font-size: 0.83rem;
+            color: var(--texto-suave);
+            line-height: 1.6;
+        }
+
+        .confirm-msg {
+            display: none;
+            background: rgba(74,222,128,0.08);
+            border: 1px solid rgba(74,222,128,0.3);
+            color: #4ade80;
+            padding: 14px 18px;
+            border-radius: var(--radio);
+            font-size: 0.85rem;
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        /* ══════════════════════════════════════════════
+                   SOBRE NOSOTROS
+                ══════════════════════════════════════════════ */
+        .sobre-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .sobre-img-card {
+            background: var(--grafito);
+            border: 1px solid var(--borde);
+            border-radius: var(--radio-m);
+            padding: 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .sobre-img-card::before {
+                content: '';
+                position: absolute;
+                top: -40px;
+                right: -40px;
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(201,168,76,0.1), transparent 70%);
+            }
+
+        .sobre-badge {
+            position: absolute;
+            bottom: -18px;
+            right: 24px;
+            background: var(--dorado);
+            color: var(--negro);
+            padding: 14px 20px;
+            border-radius: var(--radio);
+            font-family: var(--fuente-titulo);
+            font-size: 1.8rem;
+            font-weight: 600;
+            line-height: 1;
+            box-shadow: var(--sombra-m);
+        }
+
+            .sobre-badge span {
+                display: block;
+                font-family: var(--fuente-cuerpo);
+                font-size: 0.65rem;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                font-weight: 500;
+                margin-top: 2px;
+            }
+
+        .sobre-valores {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 36px;
+        }
+
+        .valor-item {
+            background: var(--grafito);
+            border: 1px solid var(--borde);
+            border-radius: var(--radio);
+            padding: 18px;
+            transition: var(--transicion);
+        }
+
+            .valor-item:hover {
+                border-color: rgba(201,168,76,0.3);
+                background: var(--grafito-med);
+            }
+
+        .valor-icon {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .valor-nombre {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--marfil);
+            letter-spacing: 0.04em;
+        }
+
+        /* ══════════════════════════════════════════════
+                   MENÚ USUARIO (dropdown de sesión)
+                ══════════════════════════════════════════════ */
+        .nav-acciones {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .usuario-dropdown .btn-usuario {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px solid rgba(201,168,76,0.35);
+            color: var(--marfil);
+            padding: 7px 14px;
+            border-radius: var(--radio);
+            font-family: var(--fuente-cuerpo);
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: var(--transicion);
+        }
+
+            .usuario-dropdown .btn-usuario:hover {
+                border-color: var(--dorado);
+                background: rgba(201,168,76,0.07);
+            }
+
+        .usuario-avatar {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .usuario-nombre {
+            max-width: 130px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .chevron-icon {
+            font-size: 0.72rem;
+            opacity: 0.7;
+        }
+
+        .menu-usuario {
+            background: #111318 !important;
+            border: 1px solid rgba(201,168,76,0.2) !important;
+            border-radius: var(--radio-m) !important;
+            min-width: 220px;
+            padding: 6px 0 !important;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important;
+        }
+
+        .menu-header {
+            padding: 12px 18px 10px;
+        }
+
+        .menu-header-nombre {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--marfil);
+        }
+
+        .menu-header-rol {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--dorado);
+            margin-top: 2px;
+        }
+
+        .divider-dorado {
+            border-color: rgba(201,168,76,0.15) !important;
+            margin: 4px 0 !important;
+        }
+
+        .item-menu {
+            display: flex !important;
+            align-items: center;
+            gap: 10px;
+            color: var(--texto-suave) !important;
+            font-size: 0.85rem !important;
+            padding: 9px 18px !important;
+            transition: var(--transicion);
+            background: transparent !important;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+            .item-menu i {
+                font-size: 1rem;
+            }
+
+            .item-menu:hover {
+                color: var(--dorado) !important;
+                background: rgba(201,168,76,0.07) !important;
+            }
+
+        .item-salir:hover {
+            color: #f87171 !important;
+            background: rgba(248,113,113,0.07) !important;
+        }
+
+        /* ══════════════════════════════════════════════
+                   NAV ESCRITORIO (sin sesión)
+                ══════════════════════════════════════════════ */
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .nav-link-item {
+            color: var(--texto-suave);
+            font-size: .75rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: 8px 14px;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+            .nav-link-item:hover {
+                color: var(--dorado);
+            }
+
+        /* ══════════════════════════════════════════════
+                   ANIMACIONES
+                ══════════════════════════════════════════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+            .reveal.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        /* ══════════════════════════════════════════════
+                   RESPONSIVE
+                ══════════════════════════════════════════════ */
+        @@media (max-width: 992px) {
+            .servicios-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .citas-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .sobre-wrapper {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+        }
+
+        @@media (max-width: 640px) {
+            .servicios-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .sobre-valores {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stats {
+                gap: 28px;
+            }
+
+            .citas-form-card {
+                padding: 28px 20px;
+            }
+        }
+
+    </style>
 </head>
 
 <body>
 
+    <!-- ══════════════════════════════════════════════════════
+         NAVBAR
+    ══════════════════════════════════════════════════════ -->
     <header class="barra-superior">
-        <button class="boton-menu" onclick="mostrarMenu()">☰</button>
+        <button class="boton-menu" onclick="mostrarMenu()" aria-label="Menú">☰</button>
 
         <a class="logo-proyecto" asp-controller="Home" asp-action="Index">
             <img src="~/img/logo-optimus-byte.png" alt="Optimus-Byte" class="logo-img" />
         </a>
-        <a class="boton-ingresar" asp-controller="Login" asp-action="Index">
-            Ingresar
-        </a>
+
+        <div class="nav-acciones">
+
+            @if (!logueado)
+            {
+                @* Sin sesión: links de navegación + botones *@
+                <nav class="nav-links d-none d-lg-flex">
+                    <a class="nav-link-item" href="#servicios">Servicios</a>
+                    <a class="nav-link-item" href="#repuestos">Repuestos</a>
+                    <a class="nav-link-item" href="#citas">Citas</a>
+                    <a class="nav-link-item" href="#sobre">Nosotros</a>
+                </nav>
+                <a class="boton-ingresar" asp-controller="Login" asp-action="Index">Ingresar</a>
+                <a class="boton-registro" asp-controller="Registro" asp-action="Index">Registrar</a>
+            }
+            else
+            {
+                @* Con sesión: menú desplegable de usuario *@
+                <div class="dropdown usuario-dropdown">
+                    <button class="btn-usuario dropdown-toggle" type="button"
+                            id="menuUsuario" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="usuario-avatar"><i class="bi bi-person-circle"></i></span>
+                        <span class="usuario-nombre">@nombre</span>
+                        <i class="bi bi-chevron-down chevron-icon"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end menu-usuario" aria-labelledby="menuUsuario">
+
+                        <li class="menu-header">
+                            <div class="menu-header-nombre">@nombre</div>
+                            <div class="menu-header-rol">@rol</div>
+                        </li>
+                        <li><hr class="dropdown-divider divider-dorado"></li>
+
+                        <li>
+                            <a class="dropdown-item item-menu" asp-controller="Home" asp-action="Perfil">
+                                <i class="bi bi-person-gear"></i> Configurar perfil
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item item-menu" asp-controller="Citas" asp-action="Index">
+                                <i class="bi bi-calendar-check"></i> Mis citas
+                            </a>
+                        </li>
+
+                        @if (rol == "Administrador" || rol == "Admin")
+                        {
+                            <li><hr class="dropdown-divider divider-dorado"></li>
+                            <li>
+                                <a class="dropdown-item item-menu" asp-controller="Inventario" asp-action="Index">
+                                    <i class="bi bi-box-seam"></i> Inventario
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item item-menu" asp-controller="Servicios" asp-action="Index">
+                                    <i class="bi bi-tools"></i> Servicios
+                                </a>
+                            </li>
+                        }
+
+                        <li><hr class="dropdown-divider divider-dorado"></li>
+                        <li>
+                            <form asp-controller="Home" asp-action="Logout" method="post" class="d-inline w-100">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="dropdown-item item-menu item-salir">
+                                    <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                                </button>
+                            </form>
+                        </li>
+
+                    </ul>
+                </div>
+            }
+
+        </div>
     </header>
 
+    <!-- ══════════════════════════════════════════════════════
+         SIDEBAR
+    ══════════════════════════════════════════════════════ -->
     <aside class="barra-lateral" id="barraLateral">
         <h2>Optimus-Byte</h2>
-
         <a asp-controller="Home" asp-action="Index">Inicio</a>
-        <a asp-controller="Registro" asp-action="Index">Clientes</a>
-        <a asp-controller="Inventario" asp-action="Index">Inventario</a>
+        <a asp-controller="Inventario" asp-action="Index">Catálogo</a>
         <a asp-controller="Servicios" asp-action="Index">Servicios</a>
         <a asp-controller="Citas" asp-action="Index">Citas</a>
-        <a asp-controller="Home" asp-action="Sobre">Acerca de</a>
+        <a href="#sobre">Acerca de</a>
     </aside>
 
-    <main class="container contenido-principal" id="contenidoPrincipal">
+    <!-- ══════════════════════════════════════════════════════
+         HERO
+    ══════════════════════════════════════════════════════ -->
+    <section class="hero" id="inicio">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-circle"></div>
 
-        <section>
-            <div>
-                <h1>Bienvenido a Optimus-Byte</h1>
-                <p>es un taller azul</p>
+        <div class="hero-visual" aria-hidden="true">
+            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="rgba(201,168,76,0.9)" stroke-width="1.5">
+                <circle cx="250" cy="250" r="180" stroke-dasharray="8 6" />
+                <circle cx="250" cy="250" r="130" />
+                <circle cx="250" cy="250" r="40" fill="rgba(201,168,76,0.15)" />
+                <circle cx="250" cy="250" r="20" fill="rgba(201,168,76,0.3)" />
+                <line x1="250" y1="70" x2="250" y2="110" />
+                <line x1="250" y1="390" x2="250" y2="430" />
+                <line x1="70" y1="250" x2="110" y2="250" />
+                <line x1="390" y1="250" x2="430" y2="250" />
+                <line x1="123" y1="123" x2="151" y2="151" />
+                <line x1="349" y1="349" x2="377" y2="377" />
+                <line x1="377" y1="123" x2="349" y2="151" />
+                <line x1="123" y1="377" x2="151" y2="349" />
+                <rect x="236" y="55" width="28" height="18" rx="3" />
+                <rect x="236" y="427" width="28" height="18" rx="3" />
+                <rect x="55" y="236" width="18" height="28" rx="3" />
+                <rect x="427" y="236" width="18" height="28" rx="3" />
+                <rect x="93" y="93" width="20" height="20" rx="3" transform="rotate(45 103 103)" />
+                <rect x="367" y="93" width="20" height="20" rx="3" transform="rotate(45 377 103)" />
+                <rect x="367" y="367" width="20" height="20" rx="3" transform="rotate(45 377 377)" />
+                <rect x="93" y="367" width="20" height="20" rx="3" transform="rotate(45 103 377)" />
+            </svg>
+        </div>
+
+        <div class="container hero-content">
+
+            @if (logueado)
+            {
+                <div class="hero-eyebrow">Bienvenido de vuelta</div>
+                <h1 class="hero-title">
+                    Hola, <strong>@nombre</strong>
+                    <em>¿Qué necesitas hoy?</em>
+                </h1>
+                <p class="hero-desc">
+                    Gestiona tus citas, consulta el inventario y administra los servicios de tu taller desde un solo lugar.
+                </p>
+                <div class="hero-ctas">
+                    <a class="hero-cta-primary" asp-controller="Citas" asp-action="Index">
+                        Mis citas →
+                    </a>
+                    <a class="hero-cta-secondary" asp-controller="Inventario" asp-action="Index">
+                        Ver catálogo de repuestos
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="hero-eyebrow">Taller mecánico profesional</div>
+                <h1 class="hero-title">
+                    Tu vehículo<br />
+                    <strong>en manos expertas</strong>
+                    <em>desde 2015</em>
+                </h1>
+                <p class="hero-desc">
+                    Diagnóstico avanzado, repuestos originales y servicio garantizado.
+                    Más de 10 años cuidando los vehículos de Bogotá con tecnología y precisión.
+                </p>
+                <div class="hero-ctas">
+                    <a class="hero-cta-primary" href="#citas">
+                        Agendar cita ↓
+                    </a>
+                    <a class="hero-cta-secondary" asp-controller="Inventario" asp-action="Index">
+                        Ver catálogo de repuestos
+                    </a>
+                </div>
+            }
+
+            <div class="hero-stats">
+                <div class="reveal">
+                    <span class="hero-stat-num">+1.200</span>
+                    <span class="hero-stat-lbl">Vehículos atendidos</span>
+                </div>
+                <div class="reveal" style="transition-delay:.1s">
+                    <span class="hero-stat-num">10</span>
+                    <span class="hero-stat-lbl">Años de experiencia</span>
+                </div>
+                <div class="reveal" style="transition-delay:.2s">
+                    <span class="hero-stat-num">98%</span>
+                    <span class="hero-stat-lbl">Clientes satisfechos</span>
+                </div>
+                <div class="reveal" style="transition-delay:.3s">
+                    <span class="hero-stat-num">500+</span>
+                    <span class="hero-stat-lbl">Repuestos disponibles</span>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-       
 
-        <section>
-            <div>
-                <h3>Inventario</h3>
-                <p>Controlar cantidades, entradas y salidas de productos.</p>
-                <a asp-controller="Inventario" asp-action="Index">Entrar a Inventarios</a>
+    <!-- ══════════════════════════════════════════════════════
+         SERVICIOS
+    ══════════════════════════════════════════════════════ -->
+    <section class="seccion seccion-alt" id="servicios">
+        <div class="container">
+            <div class="sec-eyebrow reveal">Lo que ofrecemos</div>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+                <div>
+                    <h2 class="sec-titulo reveal">Nuestros <em>servicios</em></h2>
+                    <p class="sec-desc reveal">Atendemos todo tipo de vehículos con técnicos certificados y equipos de diagnóstico de última generación.</p>
+                </div>
+                <a class="boton-catalogo reveal" asp-controller="Servicios" asp-action="Index">
+                    Todos los servicios →
+                </a>
             </div>
-        </section>
 
-        <section>
-            <div>
-                <h3>Servicios</h3>
-                <p>Gestionar los servicios que ofrece el taller mecánico.</p>
-                <a asp-controller="Servicios" asp-action="Index">Entrar a Servicios</a>
+            <div class="servicios-grid">
+                <div class="servicio-card reveal">
+                    <span class="servicio-icon">🔧</span>
+                    <div class="servicio-nombre">Mantenimiento Preventivo</div>
+                    <p class="servicio-desc">Cambio de aceite, filtros, bujías y revisión completa del sistema. Recomendado cada 5.000 km para mantener tu motor en óptimas condiciones.</p>
+                    <span class="servicio-precio">Desde $85.000 COP</span>
+                </div>
+                <div class="servicio-card reveal" style="transition-delay:.08s">
+                    <span class="servicio-icon">🛑</span>
+                    <div class="servicio-nombre">Sistema de Frenos</div>
+                    <p class="servicio-desc">Diagnóstico y cambio de pastillas, discos y líquido de frenos. Servicio esencial para tu seguridad y la de tu familia en la vía.</p>
+                    <span class="servicio-precio">Desde $120.000 COP</span>
+                </div>
+                <div class="servicio-card reveal" style="transition-delay:.16s">
+                    <span class="servicio-icon">⚡</span>
+                    <div class="servicio-nombre">Diagnóstico Electrónico</div>
+                    <p class="servicio-desc">Lectura de códigos OBD-II, revisión de sensores, alternador, batería y sistema eléctrico completo con scanner profesional.</p>
+                    <span class="servicio-precio">Desde $60.000 COP</span>
+                </div>
+                <div class="servicio-card reveal" style="transition-delay:.08s">
+                    <span class="servicio-icon">🌡️</span>
+                    <div class="servicio-nombre">Sistema de Refrigeración</div>
+                    <p class="servicio-desc">Revisión de radiador, termostato, mangueras y anticongelante. Evita el sobrecalentamiento del motor y daños costosos a largo plazo.</p>
+                    <span class="servicio-precio">Desde $70.000 COP</span>
+                </div>
+                <div class="servicio-card reveal" style="transition-delay:.16s">
+                    <span class="servicio-icon">🔩</span>
+                    <div class="servicio-nombre">Suspensión y Dirección</div>
+                    <p class="servicio-desc">Cambio de amortiguadores, rótulas, terminales y revisión de alineación. Mejora la estabilidad y el confort de tu conducción.</p>
+                    <span class="servicio-precio">Desde $150.000 COP</span>
+                </div>
+                <div class="servicio-card reveal" style="transition-delay:.24s">
+                    <span class="servicio-icon">🔍</span>
+                    <div class="servicio-nombre">Revisión Técnico-Mecánica</div>
+                    <p class="servicio-desc">Preparación completa para pasar la revisión técnico-mecánica. Revisamos emisiones, frenos, luces y toda la documentación requerida.</p>
+                    <span class="servicio-precio">Desde $95.000 COP</span>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section>
-            <div>
-                <h3>Citas</h3>
-                <p>Agendar citas de clientes para revisión o reparación.</p>
-                <a asp-controller="Citas" asp-action="Index">Entrar a Citas</a>
+
+    <!-- ══════════════════════════════════════════════════════
+         REPUESTOS DESTACADOS
+    ══════════════════════════════════════════════════════ -->
+    <section class="seccion" id="repuestos">
+        <div class="container">
+            <div class="repuestos-intro">
+                <div>
+                    <div class="sec-eyebrow reveal">Tienda de repuestos</div>
+                    <h2 class="sec-titulo reveal">Repuestos <em>destacados</em></h2>
+                    <p class="sec-desc reveal">Marcas reconocidas, garantía incluida y disponibilidad inmediata.</p>
+                </div>
+                <a class="boton-catalogo reveal" asp-controller="Inventario" asp-action="Index">
+                    Ver catálogo completo →
+                </a>
             </div>
-        </section>
 
-        <section>
-            <div>
-                <h3>Sobre el Taller</h3>
-                <p>Información sobre el taller mecánico, su historia y misión.</p>
-                <a asp-controller="Home" asp-action="Sobre">Entrar a Sobre el Taller</a>
+            <div class="contenedor-repuestos">
+                <a class="caja-repuesto reveal" asp-controller="Inventario" asp-action="Detalles" asp-route-id="1">
+                    <h3>Aceite de motor 5W-30</h3>
+                    <p>Lubricante sintético Mobil 1 para motores modernos. Máxima protección en frío y caliente.</p>
+                    <span class="precio-repuesto">$85.000 COP</span>
+                </a>
+                <a class="caja-repuesto reveal" asp-controller="Inventario" asp-action="Detalles" asp-route-id="2" style="transition-delay:.08s">
+                    <h3>Filtro de aire</h3>
+                    <p>Filtro Bosch de alta eficiencia. Mantiene limpio el ingreso de aire y mejora el rendimiento del motor.</p>
+                    <span class="precio-repuesto">$35.000 COP</span>
+                </a>
+                <a class="caja-repuesto reveal" asp-controller="Inventario" asp-action="Detalles" asp-route-id="3" style="transition-delay:.16s">
+                    <h3>Pastillas de freno</h3>
+                    <p>Pastillas Brembo para frenos delanteros. Rendimiento superior y mayor vida útil garantizada.</p>
+                    <span class="precio-repuesto">$120.000 COP</span>
+                </a>
+                <a class="caja-repuesto reveal" asp-controller="Inventario" asp-action="Detalles" asp-route-id="4" style="transition-delay:.24s">
+                    <h3>Batería 12V Willard</h3>
+                    <p>Batería automotriz de alta potencia. Ideal para autos particulares y camionetas. Garantía de 1 año.</p>
+                    <span class="precio-repuesto">$280.000 COP</span>
+                </a>
             </div>
-        </section>
+        </div>
+    </section>
 
-    </main>
 
+    <!-- ══════════════════════════════════════════════════════
+         CITAS
+    ══════════════════════════════════════════════════════ -->
+    <section class="seccion seccion-alt" id="citas">
+        <div class="container">
+            <div class="citas-wrapper">
+
+                <div class="citas-form-card reveal">
+                    <div class="citas-form-titulo">Agenda tu cita</div>
+                    <p class="citas-form-sub">Sin filas. Sin esperas innecesarias. Escoge el horario que mejor te quede.</p>
+
+                    <div class="form-grid-2">
+                        <div class="campo-grupo">
+                            <label class="campo-label">Nombre completo</label>
+                            <input class="campo-input" type="text" placeholder="Tu nombre"
+                                   value="@(logueado? nombre : "")" />
+                        </div>
+                        <div class="campo-grupo">
+                            <label class="campo-label">Teléfono / WhatsApp</label>
+                            <input class="campo-input" type="tel" placeholder="300 000 0000" />
+                        </div>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label class="campo-label">Correo electrónico</label>
+                        <input class="campo-input" type="email" placeholder="tucorreo@ejemplo.com" />
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="campo-grupo">
+                            <label class="campo-label">Marca del vehículo</label>
+                            <select class="campo-select">
+                                <option value="">Selecciona…</option>
+                                <option>Chevrolet</option>
+                                <option>Renault</option>
+                                <option>Mazda</option>
+                                <option>Toyota</option>
+                                <option>Kia</option>
+                                <option>Hyundai</option>
+                                <option>Nissan</option>
+                                <option>Ford</option>
+                                <option>Volkswagen</option>
+                                <option>Otra</option>
+                            </select>
+                        </div>
+                        <div class="campo-grupo">
+                            <label class="campo-label">Año del vehículo</label>
+                            <input class="campo-input" type="number" placeholder="2018" min="1990" max="2026" />
+                        </div>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label class="campo-label">Tipo de servicio</label>
+                        <select class="campo-select">
+                            <option value="">¿Qué necesitas?</option>
+                            <option>Mantenimiento preventivo</option>
+                            <option>Sistema de frenos</option>
+                            <option>Diagnóstico electrónico</option>
+                            <option>Sistema de refrigeración</option>
+                            <option>Suspensión y dirección</option>
+                            <option>Revisión técnico-mecánica</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="campo-grupo">
+                            <label class="campo-label">Fecha preferida</label>
+                            <input class="campo-input" type="date" />
+                        </div>
+                        <div class="campo-grupo">
+                            <label class="campo-label">Horario</label>
+                            <select class="campo-select">
+                                <option value="">Selecciona…</option>
+                                <option>7:00 AM – 9:00 AM</option>
+                                <option>9:00 AM – 11:00 AM</option>
+                                <option>11:00 AM – 1:00 PM</option>
+                                <option>2:00 PM – 4:00 PM</option>
+                                <option>4:00 PM – 6:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label class="campo-label">Descripción del problema (opcional)</label>
+                        <textarea class="campo-textarea" placeholder="Cuéntanos con detalle qué pasa con tu vehículo…"></textarea>
+                    </div>
+
+                    <button class="btn-agendar" onclick="agendarCita()">
+                        Confirmar cita →
+                    </button>
+                    <div class="confirm-msg" id="confirmMsg">
+                        ✅ ¡Cita registrada! Te contactaremos para confirmar el horario.
+                    </div>
+                </div>
+
+                <div class="citas-beneficios">
+                    <div class="sec-eyebrow reveal">¿Por qué agendar con nosotros?</div>
+                    <h2 class="sec-titulo reveal" style="max-width:380px;">
+                        Atención <em>puntual</em> y sin sorpresas
+                    </h2>
+                    <div style="margin-top:36px;">
+                        <div class="beneficio-item reveal">
+                            <div class="beneficio-icon">📅</div>
+                            <div>
+                                <div class="beneficio-titulo">Horarios flexibles</div>
+                                <p class="beneficio-texto">Atendemos de lunes a sábado de 7 AM a 6 PM. Escoge el horario que más te convenga sin filas.</p>
+                            </div>
+                        </div>
+                        <div class="beneficio-item reveal" style="transition-delay:.1s">
+                            <div class="beneficio-icon">🔔</div>
+                            <div>
+                                <div class="beneficio-titulo">Recordatorio automático</div>
+                                <p class="beneficio-texto">Te enviamos un recordatorio por WhatsApp 24 horas antes de tu cita para que no se te olvide.</p>
+                            </div>
+                        </div>
+                        <div class="beneficio-item reveal" style="transition-delay:.2s">
+                            <div class="beneficio-icon">💰</div>
+                            <div>
+                                <div class="beneficio-titulo">Presupuesto sin compromiso</div>
+                                <p class="beneficio-texto">Al llegar, te damos un diagnóstico y presupuesto detallado antes de iniciar cualquier trabajo.</p>
+                            </div>
+                        </div>
+                        <div class="beneficio-item reveal" style="transition-delay:.3s">
+                            <div class="beneficio-icon">✅</div>
+                            <div>
+                                <div class="beneficio-titulo">Garantía en cada servicio</div>
+                                <p class="beneficio-texto">Todos nuestros servicios tienen garantía de mano de obra. Si algo falla, volvemos a revisarlo sin costo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════
+         SOBRE NOSOTROS
+    ══════════════════════════════════════════════════════ -->
+    <section class="seccion" id="sobre">
+        <div class="container">
+            <div class="sobre-wrapper">
+
+                <div class="sobre-visual reveal">
+                    <div class="sobre-img-card">
+                        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg"
+                             style="width:100%;max-width:280px;margin:0 auto;display:block;opacity:.7;"
+                             fill="none" stroke="var(--dorado)" stroke-width="1.5">
+                            <circle cx="160" cy="160" r="100" />
+                            <circle cx="160" cy="160" r="60" stroke-dasharray="6 4" />
+                            <circle cx="160" cy="160" r="24" fill="rgba(201,168,76,0.2)" />
+                            <line x1="160" y1="40" x2="160" y2="80" />
+                            <line x1="160" y1="240" x2="160" y2="280" />
+                            <line x1="40" y1="160" x2="80" y2="160" />
+                            <line x1="240" y1="160" x2="280" y2="160" />
+                            <line x1="75" y1="75" x2="103" y2="103" />
+                            <line x1="217" y1="217" x2="245" y2="245" />
+                            <line x1="245" y1="75" x2="217" y2="103" />
+                            <line x1="75" y1="245" x2="103" y2="217" />
+                            <rect x="148" y="26" width="24" height="16" rx="3" />
+                            <rect x="148" y="278" width="24" height="16" rx="3" />
+                            <rect x="26" y="148" width="16" height="24" rx="3" />
+                            <rect x="278" y="148" width="16" height="24" rx="3" />
+                        </svg>
+                        <p style="margin-top:24px;font-family:var(--fuente-titulo);font-size:1.1rem;color:var(--marfil);opacity:.8;">Precisión en cada detalle</p>
+                        <p style="font-size:.82rem;color:var(--texto-suave);margin-top:8px;">Tecnología + experiencia al servicio de tu vehículo</p>
+                        <div class="sobre-badge">10+<span>años de exp.</span></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="sec-eyebrow reveal">Conoce Optimus-Byte</div>
+                    <h2 class="sec-titulo reveal">
+                        Más que un taller,<br /><em>somos tu equipo</em>
+                    </h2>
+                    <p style="color:var(--texto-claro);line-height:1.9;margin-bottom:16px;" class="reveal">
+                        Somos un taller mecánico especializado en Bogotá con más de 10 años de experiencia atendiendo vehículos particulares, camionetas y flotas empresariales.
+                    </p>
+                    <p style="color:var(--texto-suave);font-size:.9rem;line-height:1.8;margin-bottom:36px;" class="reveal">
+                        Combinamos experiencia mecánica con tecnología moderna: escáneres OBD-II, herramientas de diagnóstico de última generación y repuestos originales con garantía de fábrica. Nuestro objetivo es darte la tranquilidad de saber que tu vehículo está en manos expertas.
+                    </p>
+                    <div class="sobre-valores reveal">
+                        <div class="valor-item"><span class="valor-icon">🎯</span><div class="valor-nombre">Diagnóstico preciso</div></div>
+                        <div class="valor-item"><span class="valor-icon">🔐</span><div class="valor-nombre">Repuestos originales</div></div>
+                        <div class="valor-item"><span class="valor-icon">⏱️</span><div class="valor-nombre">Entrega a tiempo</div></div>
+                        <div class="valor-item"><span class="valor-icon">📋</span><div class="valor-nombre">Garantía escrita</div></div>
+                    </div>
+                    <a class="boton-primario reveal" href="#citas" style="margin-top:36px;text-decoration:none;">
+                        Agendar mi cita ahora →
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════
+         FOOTER
+    ══════════════════════════════════════════════════════ -->
+    <footer style="background:var(--negro);border-top:1px solid var(--borde);padding:48px 0 28px;">
+        <div class="container">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;margin-bottom:40px;flex-wrap:wrap;">
+
+                <div>
+                    <div style="font-family:var(--fuente-titulo);font-size:1.4rem;color:var(--dorado);font-weight:600;letter-spacing:.05em;margin-bottom:14px;">OPTIMUS-BYTE</div>
+                    <p style="font-size:.85rem;color:var(--texto-suave);line-height:1.8;max-width:320px;">
+                        Tu taller mecánico de confianza en Bogotá. Diagnóstico preciso, repuestos originales y servicio garantizado desde 2015.
+                    </p>
+                    <div style="margin-top:20px;display:flex;gap:10px;">
+                        <a href="#" style="width:36px;height:36px;border:1px solid var(--borde);border-radius:var(--radio);display:flex;align-items:center;justify-content:center;color:var(--texto-suave);font-size:.9rem;text-decoration:none;transition:var(--transicion);" onmouseover="this.style.borderColor='var(--dorado)';this.style.color='var(--dorado)'" onmouseout="this.style.borderColor='var(--borde)';this.style.color='var(--texto-suave)'">📘</a>
+                        <a href="#" style="width:36px;height:36px;border:1px solid var(--borde);border-radius:var(--radio);display:flex;align-items:center;justify-content:center;color:var(--texto-suave);font-size:.9rem;text-decoration:none;transition:var(--transicion);" onmouseover="this.style.borderColor='var(--dorado)';this.style.color='var(--dorado)'" onmouseout="this.style.borderColor='var(--borde)';this.style.color='var(--texto-suave)'">📷</a>
+                        <a href="#" style="width:36px;height:36px;border:1px solid var(--borde);border-radius:var(--radio);display:flex;align-items:center;justify-content:center;color:var(--texto-suave);font-size:.9rem;text-decoration:none;transition:var(--transicion);" onmouseover="this.style.borderColor='var(--dorado)';this.style.color='var(--dorado)'" onmouseout="this.style.borderColor='var(--borde)';this.style.color='var(--texto-suave)'">💬</a>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dorado);margin-bottom:16px;font-weight:500;">Navegación</div>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        <a href="#servicios" style="color:var(--texto-suave);text-decoration:none;font-size:.85rem;transition:.2s;" onmouseover="this.style.color='var(--dorado)'" onmouseout="this.style.color='var(--texto-suave)'">Servicios</a>
+                        <a href="#repuestos" style="color:var(--texto-suave);text-decoration:none;font-size:.85rem;transition:.2s;" onmouseover="this.style.color='var(--dorado)'" onmouseout="this.style.color='var(--texto-suave)'">Repuestos</a>
+                        <a href="#citas" style="color:var(--texto-suave);text-decoration:none;font-size:.85rem;transition:.2s;" onmouseover="this.style.color='var(--dorado)'" onmouseout="this.style.color='var(--texto-suave)'">Citas</a>
+                        <a href="#sobre" style="color:var(--texto-suave);text-decoration:none;font-size:.85rem;transition:.2s;" onmouseover="this.style.color='var(--dorado)'" onmouseout="this.style.color='var(--texto-suave)'">Sobre nosotros</a>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dorado);margin-bottom:16px;font-weight:500;">Contacto</div>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        <span style="color:var(--texto-suave);font-size:.85rem;">📍 Bogotá, Colombia</span>
+                        <span style="color:var(--texto-suave);font-size:.85rem;">📞 +57 300 000 0000</span>
+                        <span style="color:var(--texto-suave);font-size:.85rem;">✉️ contacto@optimusbyte.co</span>
+                        <span style="color:var(--texto-suave);font-size:.85rem;">🕐 Lun–Sáb: 7AM – 6PM</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="border-top:1px solid var(--borde);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                <span style="font-size:.78rem;color:var(--texto-suave);">&copy; 2026 Optimus-Byte — Todos los derechos reservados</span>
+                <span style="font-size:.72rem;color:var(--grafito-claro);letter-spacing:.08em;">TALLER MECÁNICO PROFESIONAL · BOGOTÁ</span>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ══════════════════════════════════════════════════════
+         SCRIPTS
+    ══════════════════════════════════════════════════════ -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        function mostrarMenu() {
+            const barra     = document.getElementById('barraLateral');
+            const contenido = document.getElementById('contenidoPrincipal');
+            barra.classList.toggle('activa');
+            if (contenido) contenido.classList.toggle('movido');
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        function agendarCita() {
+            const nombre   = document.querySelector('.campo-input[type="text"]');
+            const telefono = document.querySelector('.campo-input[type="tel"]');
+
+            if (!nombre || nombre.value.trim().length < 3) {
+                nombre.style.borderColor = '#f87171';
+                nombre.focus();
+                return;
+            }
+            nombre.style.borderColor = '';
+
+            if (!telefono || telefono.value.trim().length < 7) {
+                telefono.style.borderColor = '#f87171';
+                telefono.focus();
+                return;
+            }
+            telefono.style.borderColor = '';
+
+            const msg = document.getElementById('confirmMsg');
+            msg.style.display = 'block';
+            setTimeout(() => { msg.style.display = 'none'; }, 5000);
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const target = document.querySelector(a.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>

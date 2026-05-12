@@ -17,6 +17,9 @@ namespace VistaPrincipal.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString("UsuarioId") != null)
+                return RedirigirPorRol(HttpContext.Session.GetString("UsuarioRol")!);
+
             return View("~/Views/Login/Index.cshtml");
         }
 
@@ -25,7 +28,8 @@ namespace VistaPrincipal.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(LoginViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+                return View("~/Views/Login/Index.cshtml", model);
 
             var usuario = _db.Usuarios
                 .Include(u => u.Rol)
@@ -33,23 +37,19 @@ namespace VistaPrincipal.Controllers
 
             if (usuario == null || !BC.Verify(model.Contrasena, usuario.ContrasenaHash))
             {
-                // Registrar intento fallido
-                _db.IntentosFallidos.Add(new IntentoFallido
-                {
-                    Correo = model.Correo
-                });
+                _db.IntentosFallidos.Add(new IntentoFallido { Correo = model.Correo });
                 _db.SaveChanges();
 
-                ModelState.AddModelError("", "Correo o contraseña incorrectos");
-                return View(model);
+                ModelState.AddModelError("", "Correo o contraseña incorrectos.");
+                return View("~/Views/Login/Index.cshtml", model);
             }
 
             // Guardar sesión
             HttpContext.Session.SetString("UsuarioId", usuario.IdUsuario.ToString());
             HttpContext.Session.SetString("UsuarioNombre", usuario.NombreCompleto);
-            HttpContext.Session.SetString("UsuarioRol", usuario.Rol.NombreRol);
+            HttpContext.Session.SetString("UsuarioRol", usuario.Rol!.NombreRol);
 
-            // Registrar en auditoría
+            // Log auditoría
             _db.LogAuditoria.Add(new LogAuditoria
             {
                 IdUsuario = usuario.IdUsuario,
@@ -58,11 +58,20 @@ namespace VistaPrincipal.Controllers
             });
             _db.SaveChanges();
 
-            // Redirigir a la vista principal
-            return RedirectToAction("Index", "Home");
+            // ── Redirigir según los 3 roles ──────────────────────
+            return RedirigirPorRol(usuario.Rol.NombreRol);
         }
 
-        // ================= REGISTRO =================
+        // Helper de redirección
+        private IActionResult RedirigirPorRol(string rol) => rol switch
+        {
+            "Admin" => RedirectToAction("Index", "Usuarios"),
+            "Mecanico" => RedirectToAction("MisOrdenes", "Mecanico"),
+            "Cliente" => RedirectToAction("Portal", "Cliente"),
+            _ => RedirectToAction("Index", "Home")
+        };
+
+        // ── REGISTRO ─────────────────────────────────────────
         [HttpGet]
         public IActionResult Registro()
         {
@@ -73,32 +82,62 @@ namespace VistaPrincipal.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Registro(Usuario model)
         {
-            if (ModelState.IsValid)
+            if (_db.Usuarios.Any(u => u.Correo == model.Correo))
             {
-                var usuario = new Usuario
-                {
-                    NombreCompleto = model.NombreCompleto,
-                    Correo = model.Correo,
-                    Telefono = model.Telefono,
-                    ContrasenaHash = BC.HashPassword(model.Contrasena),
-                    Activo = true,
-                    IdRol = 4 // Cliente (ajústalo si tienes otro)
-                };
-
-                _db.Usuarios.Add(usuario);
-                _db.SaveChanges();
-
-                return RedirectToAction("Index");
+                ModelState.AddModelError("Correo", "Este correo ya está registrado.");
+                return View("~/Views/Registro/Index.cshtml", model);
             }
 
-            return View(model);
+            if (!ModelState.IsValid)
+                return View("~/Views/Registro/Index.cshtml", model);
+
+            var nuevoUsuario = new Usuario
+            {
+                NombreCompleto = model.NombreCompleto,
+                Correo = model.Correo,
+                Telefono = model.Telefono,
+                ContrasenaHash = BC.HashPassword(model.Contrasena),
+                Activo = true,
+                IdRol = 3   // ← rol Cliente (id 3)
+            };
+
+            _db.Usuarios.Add(nuevoUsuario);
+            _db.SaveChanges();
+
+            TempData["RegistroExitoso"] = $"¡Bienvenido {model.NombreCompleto}! Ya puedes iniciar sesión.";
+            return RedirectToAction("Index");
         }
 
-        // ================= LOGOUT =================
+        // ── LOGOUT ───────────────────────────────────────────
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index");
         }
+        public IActionResult Usuarios_Index()
+        {
+            if (HttpContext.Session.GetString("UsuarioRol") != "Admin")
+                return RedirectToAction("Index");
+
+            var usuarios = _db.Usuarios
+                .Include(u => u.Rol)
+                .OrderBy(u => u.IdRol)
+                .ThenBy(u => u.NombreCompleto)
+                .Select(u => new UsuarioEditarViewModel
+                {
+                    IdUsuario = u.IdUsuario,
+                    NombreCompleto = u.NombreCompleto,
+                    Correo = u.Correo,
+                    Telefono = u.Telefono ?? "",
+                    IdRol = u.IdRol,
+                    Activo = u.Activo,
+                    Rol = u.Rol
+                })
+                .ToList();
+
+            ViewBag.Roles = _db.Roles.OrderBy(r => r.RolId).ToList();
+            return RedirectToAction("Index", "Usuarios");
+        }
     }
 }
+

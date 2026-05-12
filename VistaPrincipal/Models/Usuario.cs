@@ -22,9 +22,9 @@ public class Usuario
     public bool Activo { get; set; }
 
     [Column("id_rol")]
+    [ForeignKey("Rol")]
     public int IdRol { get; set; }
 
-    [ForeignKey("IdRol")] // 🔥 ESTA LÍNEA ES LA SOLUCIÓN
     public Rol? Rol { get; set; }
 
     [Column("telefono")]
@@ -32,5 +32,5 @@ public class Usuario
 
     [NotMapped]
     [Required]
-    public string Contrasena { get; set; }
+    public string Contrasena { get; set; }  // ← sin = string.Empty
 }

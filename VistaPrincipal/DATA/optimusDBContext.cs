@@ -1,10 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using VistaPrincipal.Controllers;
+using VistaPrincipal.Models;
 
 namespace VistaPrincipal.Data
 {
     public class optimusDBContext : DbContext
     {
+
+        
         public optimusDBContext(DbContextOptions<optimusDBContext> options)
             : base(options) { }
 
